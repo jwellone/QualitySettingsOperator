@@ -21,6 +21,12 @@ namespace jwellone
 		[SerializeField] Toggle _toggleBillboardsFaceCameraPosition = null!;
 		[SerializeField] InputField _inputResolutionScalingFixedDPIFactor = null!;
 		[SerializeField] Toggle _toggleTextureStreaming = null!;
+		[SerializeField] GameObject _textureStreamingSettings = null!;
+		[SerializeField] Toggle _toggleAddAllCameras = null!;
+		[SerializeField] InputField _inputMemoryBudget = null!;
+		[SerializeField] InputField _inputRenderersPerFrame = null!;
+		[SerializeField] InputField _inputMaxLevelReduction = null!;
+		[SerializeField] InputField _inputMaxIORequests = null!;
 		[SerializeField] Dropdown _dropdownShadowmaskMode = null!;
 		[SerializeField] Dropdown _dropdownShadows = null!;
 		[SerializeField] Dropdown _dropdownShadowResolution = null!;
@@ -162,6 +168,51 @@ namespace jwellone
 			_toggleTextureStreaming.onValueChanged.AddListener(_ =>
 			{
 				QualitySettings.streamingMipmapsActive = _toggleTextureStreaming.isOn;
+				_textureStreamingSettings.SetActive(QualitySettings.streamingMipmapsActive);
+			});
+
+			_textureStreamingSettings.SetActive(QualitySettings.streamingMipmapsActive);
+
+			_toggleAddAllCameras.isOn = QualitySettings.streamingMipmapsAddAllCameras;
+			_toggleAddAllCameras.onValueChanged.AddListener(_ =>
+			{
+				QualitySettings.streamingMipmapsAddAllCameras = _toggleAddAllCameras.isOn;
+			});
+
+			_inputMemoryBudget.text = QualitySettings.streamingMipmapsMemoryBudget.ToString();
+			_inputMemoryBudget.onEndEdit.AddListener(_ =>
+			{
+				if (float.TryParse(_inputMemoryBudget.text, out var result))
+				{
+					QualitySettings.streamingMipmapsMemoryBudget = result;
+				}
+			});
+
+			_inputRenderersPerFrame.text = QualitySettings.streamingMipmapsRenderersPerFrame.ToString();
+			_inputRenderersPerFrame.onEndEdit.AddListener(_ =>
+			{
+				if (int.TryParse(_inputRenderersPerFrame.text, out var result))
+				{
+					QualitySettings.streamingMipmapsRenderersPerFrame = result;
+				}
+			});
+
+			_inputMaxLevelReduction.text = QualitySettings.streamingMipmapsMaxLevelReduction.ToString();
+			_inputMaxLevelReduction.onEndEdit.AddListener(_ =>
+			{
+				if (int.TryParse(_inputMaxLevelReduction.text, out var result))
+				{
+					QualitySettings.streamingMipmapsMaxLevelReduction = result;
+				}
+			});
+
+			_inputMaxIORequests.text = QualitySettings.streamingMipmapsMaxFileIORequests.ToString();
+			_inputMaxIORequests.onEndEdit.AddListener(_ =>
+			{
+				if (int.TryParse(_inputMaxIORequests.text, out var result))
+				{
+					QualitySettings.streamingMipmapsMaxFileIORequests = result;
+				}
 			});
 
 
